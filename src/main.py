@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from utils import parse_message, tel_send_message
+from utils import handle_request
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,11 +11,8 @@ def index():
     if request.method == 'POST':
         msg = request.get_json()
 
-        chat_id, txt = parse_message(msg)
-        if txt == "hi":
-            tel_send_message(chat_id, "Hello!!")
-        else:
-            tel_send_message(chat_id, 'from webhook')
+        handle_request(msg)
+
 
         return Response('ok', status=200)
     else:

@@ -4,14 +4,22 @@ import os
 
 TOKEN = os.getenv("TOKEN")
 
-
-
+def filter_textual_msg(message):
+    if 'message' in message and 'text' in message['message']:
+        return message
+    else:
+        return None
+def handle_request(message):
+    message = filter_textual_msg(message)
+    if message is not None:
+        chat_id, txt = parse_message(message)
+        if txt == "hi":
+            tel_send_message(chat_id, "Hello!!")
+        else:
+            tel_send_message(chat_id, 'from webhook')
+            
 def parse_message(message):
     # Discard updates with no message or message without content
-    if 'message' not in message:
-        return -1, -1
-    elif 'text' not in message['message']:
-        return -1 ,-1
     print("message-->", message)
     chat_id, txt = message['message']['chat']['id'], message['message']['text']
     print("chat_id-->", chat_id)
